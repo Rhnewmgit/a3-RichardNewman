@@ -1,0 +1,15 @@
+{
+  "name": "a2-RichardNewman",
+  "version": "",
+  "description": "WPI CS 4241 assignment 2",
+  "author": "Richard Newman",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "mime": "^2.4.4"
+  },
+  "engines": {
+    "node": "24.x"
+  }
+}

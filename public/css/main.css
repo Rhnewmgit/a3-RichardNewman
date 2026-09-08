@@ -1,0 +1,125 @@
+:root {
+  --default-background: #ccd2d0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--default-background);
+  color: #2f2f2f;
+  box-sizing: border-box;
+  margin: 0;
+  font-family: Helvetica, sans-serif;
+}
+
+main {
+  margin: 8px;
+  margin-bottom: 15lvh;
+}
+
+header {
+  border: 3px solid black;
+  background-color: #4b5edd;
+  color: white;
+  text-align: center;
+  text-shadow: -1px 1px 2px black;
+  width: 100%;
+
+  .authorBy {
+    text-shadow: -1px 1px 1px #404040;
+    font-weight: normal;
+    font-size: 0.7rem;
+    text-align: right;
+  }
+}
+
+#reactBtn {
+  width: 40svh;
+  height: 30svh;
+  font-weight: normal;
+  font-size: 200%;
+  border: 5px outset black;
+  border-radius: 12.5%;
+}
+
+#reactBtn.idle {
+  background-color: buttonface;
+  color: buttontext;
+  font-weight: normal;
+}
+
+#reactBtn.wait {
+  background-color: #202224;
+  color: white;
+  font-weight: normal;
+}
+
+#reactBtn.press {
+  background-color: #36eb2f;
+  color: black;
+  font-weight: bold;
+}
+
+#reactBtn.noName {
+  font-style: italic;
+  font-size: 100%;
+  border: none;
+  width: 30svh;
+  height: 10svh;
+  background-color: grey;
+}
+
+
+
+.buttonBox {
+  padding: 10lvh 0;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.nonReactInputs {
+  width: 100%;
+  padding-top: 20px;
+  border-top: 3px dotted #050505;
+  box-sizing: border-box;
+  /* padding: 20px 20px */
+}
+
+.dataList {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  ul {
+    width: 45%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      border: 1px dashed grey;
+      padding: 2px;
+
+      input {
+        display: inline;
+        border: none;
+        color: inherit;
+        width: 4em;
+        font: inherit;
+        padding: 0;
+        background-color: inherit;
+        cursor: text;
+      }
+    }
+  }
+
+  #avgList {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+  }
+}
