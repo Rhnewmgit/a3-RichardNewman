@@ -4,7 +4,8 @@ let timeList = null;
 let avgList = null;
 let reactBtn = null;
 let nameBtn = null;
-let usrname = "";
+let playername = "";
+let resetBtn = null;
 
 const reactStateList = {
   idle: 0,
@@ -25,8 +26,8 @@ const submit = async function (event) {
   event.preventDefault()
   switch (reactState) {
     case reactStateList["idle"]:
-      usrname = document.querySelector("#yourname").value;
-      if (usrname != "") {
+      playername = document.querySelector("#yourname").value;
+      if (playername != "") {
         stateWait();
       }
       break;
@@ -36,7 +37,7 @@ const submit = async function (event) {
     case reactStateList["press"]:
       const pressTime = Date.now();
       stateWait();
-      updateLists(usrname, pressTime - reactStateStartTime, pressTime);
+      sendTimeAndUpdate(playername, pressTime - reactStateStartTime, pressTime);
       break;
   }
 };
@@ -65,8 +66,8 @@ function statePress() {
 function stateIdle() {
   clearTimeout(reactTimeoutID);
   reactState = reactStateList["idle"];
-  usrname = document.querySelector("#yourname").value;
-  if (usrname === "") {
+  playername = document.querySelector("#yourname").value;
+  if (playername === "") {
     reactBtn.className = "noName"
     reactBtn.textContent = "Enter your name first!";
 
@@ -77,31 +78,59 @@ function stateIdle() {
   }
 }
 
-/* Sends and fetches data from server; sending empty name field results in no stored data 
-    name: user input name
-    ms: reaction time
-    time: current local time (unique per user)*/
-async function transferData(name, ms, time) {
-  json = { name: name, ms: ms, time: time }, body = JSON.stringify(json);
+/**
+ * Sends time data to the server, returning an object containing res1 and res2, which correspond to the ack and the modified average, respectively;
+ *  name: user input name
+ *  ms: reaction time
+ */
+async function sendNewTimeData(name, ms) {
+  json = { name: name, ms: ms }, body = JSON.stringify(json);
 
   const response = await fetch("/submit", {
     method: "POST",
     body,
+    headers: { "content-type": "application/json" }
   });
   const arr = await response.json();
   return arr;
 }
 
-// Sends data to server and updates time and average time lists after receiving the appropriate data;
-// empty name field only updates lists
-async function updateLists(name, ms, time) {
-  const arr = await transferData(name, ms, time);
+/**
+ * Sends time data to the server and receives the updated list  
+ *  name: user input name
+ *  ms: reaction time
+ */
+async function sendTimeAndUpdate(name, ms) {
+  let arr = await sendNewTimeData(name, ms);
+  await updateLists(arr);
+}
+
+
+/**
+ * Retrieves all database document
+ */
+async function getDBDocuments() {
+  const response = await fetch("/docs", {
+    method: "GET",
+  });
+
+  const arr = await response.json();
+  return arr;
+}
+
+
+// updates time and average time lists with given object holding a list of times and averages
+async function updateLists(arr = null) {
+  if (arr === null) {
+    arr = await getDBDocuments();
+  }
+
   timeList.innerHTML = "";
   for (let n = arr.times.length - 1; n >= 0; n--) {
     const item = arr.times[n];
     const li = document.createElement("li");
     li.dataset.name = item.name;
-    li.dataset.timestamp = item.time;
+    li.dataset._id = item._id;
     li.innerHTML = `<button type="button" class="listBtn editBtn">✏️</button>
                   <button type="button" class="listBtn deleteBtn">🗑️</button>
                   ${item.name}: 
@@ -114,7 +143,7 @@ async function updateLists(name, ms, time) {
   for (item of Object.values(arr.averages)) {
     const li = document.createElement("li");
     li.dataset.name = item.name;
-    li.dataset.timestamp = item.time;
+    li.dataset._id = item._id;
     li.innerHTML = `<button type="button" class="listBtn deleteAvgBtn">🗑️</button>
                   ${item.name} Avg: ${Math.floor(item.avg)}ms`;
     avgList.appendChild(li);
@@ -122,60 +151,80 @@ async function updateLists(name, ms, time) {
   document.querySelectorAll(".listBtn").forEach(button => {
     let buttonFunc;
     const name = button.parentNode.dataset.name;
-    const timestamp = button.parentNode.dataset.timestamp;
+    const _id = button.parentNode.dataset._id;
     switch (button.className.split(' ')[1]) {
       case "editBtn":
         const reactMS = button.parentNode.querySelector(".reactMS");
-        buttonFunc = function () {
+        buttonFunc = () => {
+          button.setAttribute("disabled", "disabled");
           reactMS.removeAttribute("disabled");
           reactMS.focus();
           reactMS.type = "number"
           reactMS.style.width = "4em";
         }
         reactMS.addEventListener("focusout", () => {
+          button.removeAttribute("disabled");
           reactMS.type = "text"
           reactMS.setAttribute("disabled", "disabled");
-          putData(Number(reactMS.value), name, timestamp);
+          putData(Number(reactMS.value), _id);
         })
         break;
       case "deleteBtn":
-        buttonFunc = deleteData("single", name, timestamp);
+        buttonFunc = deleteData(button, "single", name, _id);
 
         break;
       case "deleteAvgBtn":
-        buttonFunc = deleteData("all", name, timestamp);
+        buttonFunc = deleteData(button, "all", name, _id);
 
         break;
     }
     button.addEventListener("click", buttonFunc)
   });
-  // c) =>nsole.log('arr:', arr)
 }
 
-function deleteData(type, name, timestamp) {
+function deleteData(button, type, name, _id) {
   return async function () {
-    json = { type: type, name: name, timestamp: timestamp }, body = JSON.stringify(json);
+    button.setAttribute("disabled", "disabled");
+    let json = { type, name, _id };
+    let body = JSON.stringify(json);
 
-    const response = await fetch("/submit", {
+    const response = await fetch("/remove", {
       method: "DELETE",
       body,
+      headers: { "content-type": "application/json" }
     });
+
     const arr = await response.json();
-    // console.log(`Delete: ${type} ${name} ${timestamp}`)
-    updateLists("", 0, 0)
+    if (arr === null || !arr.acknowledged) {
+      button.removeAttribute("disabled");
+    }
+    await updateLists(arr);
   }
 }
 
-async function putData(ms, name, timestamp) {
-  json = { ms: ms, name: name, timestamp: timestamp }, body = JSON.stringify(json);
+async function putData(ms, _id) {
+  json = { ms: ms, _id: _id }, body = JSON.stringify(json);
 
-  const response = await fetch("/submit", {
+  const response = await fetch("/edit", {
     method: "PUT",
     body,
+    headers: { "content-type": "application/json" }
   });
   const arr = await response.json();
-  // console.log(`edit: ${type} ${name} ${timestamp}`)
-  await updateLists("", 0, 0);
+  await updateLists(arr);
+}
+
+/**
+ * Remove all data for the user and fill with sample data
+ */
+async function resetToSample(event) {
+  event.target.setAttribute("hidden", "true");
+  const response = await fetch("/reset", {
+    method: "DELETE",
+  });
+  const arr = await response.json();
+  await updateLists(arr);
+  resetBtn.removeAttribute("hidden");
 }
 
 
@@ -188,10 +237,22 @@ window.onload = function () {
   // }
   timeList = document.querySelector("#timeList");
   avgList = document.querySelector("#avgList");
-  updateLists("", 0, 0);
+  updateLists();
 
   document.querySelector('#yourname').addEventListener("change", () => {
     stateIdle()
   })
+
+  resetBtn = document.querySelector("#resetBtn");
+  let areYouSureBtn = resetBtn.nextElementSibling;
+  resetBtn.addEventListener("click", () => {
+    resetBtn.setAttribute("hidden", "true");
+    areYouSureBtn.removeAttribute("hidden");
+    setTimeout(() => {
+      areYouSureBtn.setAttribute("hidden", "true");
+      resetBtn.removeAttribute("hidden");
+    }, 4000);
+  })
+  areYouSureBtn.addEventListener("click", resetToSample);
 
 };

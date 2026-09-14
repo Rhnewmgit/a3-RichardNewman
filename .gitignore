@@ -1,2 +1,6 @@
 node_modules/
 package-lock.json
+.env
+*.old
+TODO.*
+cookies.js

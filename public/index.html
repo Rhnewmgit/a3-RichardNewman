@@ -18,18 +18,17 @@
       Reaction Speed Test <span class="authorBy">By Richard Newman</span>
     </h1>
   </header>
-  <!-- Button, to Start, then wait (changes background to be darker),
-    then PRESS! and BRIGHT background -->
-  <!-- Return to normal after 5 seconds of waiting -->
-
-  <!-- Center start button; when pressed, hides header, fills ~80% of width, ~50% of height, changes color to dark; when pressable,  -->
   <main>
     <div class="buttonBox">
       <button type="button" id="reactBtn" class="noName">Enter your name first!</button>
     </div>
     <div class="nonReactInputs">
       <form onsubmit="event.preventDefault()">
-        <input type="text" id="yourname" placeholder="Name (Required)" autocomplete="off">
+        <div class="nameAndReset">
+          <input type="text" id="yourname" placeholder="Name (Required)" autocomplete="off">
+          <button type="button" id="resetBtn">Reset All Data</button>
+          <button type="button" id="resetBtnSure" hidden="true">Are you sure?</button>
+        </div>
         <br>
         <br>
         <div class="dataList">

@@ -123,3 +123,8 @@ header {
     justify-content: flex-end;
   }
 }
+
+.nameAndReset {
+  display: flex;
+  justify-content: space-between;
+}
