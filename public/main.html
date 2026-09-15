@@ -5,14 +5,20 @@
   <title>Reaction Speed Test</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <script src="js/main.js"></script>
+  <meta name="description" content="Reaction speed test made for Webware Assignment 3">
+  <script src="js/main.js" defer></script>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"> -->
+  <!-- <link rel="stylesheet" href="css/pico.min.css"> -->
+  <link rel="preload" href="css/pico.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="css/pico.min.css">
+  </noscript>
 
-
-
-
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="preload" href="css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="css/main.css">
+  </noscript>
 
   <!-- get rid of favicon error -->
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
@@ -33,7 +39,7 @@
         <div class="nameAndReset">
           <input type="text" id="yourname" placeholder="Name (Required)" autocomplete="off">
           <button type="button" id="resetBtn">Reset All Data</button>
-          <button type="button" id="resetBtnSure" class="resetBtnSure" hidden="true">Are you sure?</button>
+          <button type="button" id="resetBtnSure" class="resetBtnSure" hidden>Are you sure?</button>
         </div>
         <div class="currentUserLogout">
           <button type="button" class="currentUserLogoutBtn secondary">Logout </button>
@@ -41,9 +47,9 @@
         <br>
         <div class="dataList">
 
-          <ul id="timeList">
+          <ul id="timeList" aria-label="List of the all reaction times">
           </ul>
-          <ul id="avgList">
+          <ul id="avgList" aria-label="List of averages among all reaction times">
           </ul>
         </div>
       </form>

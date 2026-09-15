@@ -5,9 +5,11 @@
     <title>Reaction Speed Test</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <script src="js/login.js"></script>
+    <meta name="description" content="Login page for a reaction speed test made for Webware Assignment 3">
+    <script src="js/login.js" defer></script>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"> -->
+    <link rel="stylesheet" href="css/pico.min.css">
 
 
 
@@ -26,22 +28,22 @@
     </header>
     <main class="loginMain">
         <form class="loginForm" action="/login">
-            <p>Login or Sign up</p>
+            <p>Login or Sign up <a href="/auth/github">(or sign in with GitHub)</a></p>
             <label>
                 Username:
                 <input type="text" class="username" autocomplete="username" name="username" maxlength="50" minlength="4"
                     required pattern="[a-zA-Z0-9]*">
-                <p>Username must consist of at least 4 alphanumeric characters</p>
             </label>
+            <p>Username must consist of at least 4 alphanumeric characters</p>
 
             <label> Password:
                 <input type="password" class="password" autocomplete="current-password" name="password" maxlength="100"
                     minlength="4" required pattern="[a-zA-Z0-9!@#$%^&*\(\)]*">
-                <p>Username must consist of at least 4 alphanumeric characters or !@#$%^&*()</p>
             </label>
+            <p>Username must consist of at least 4 alphanumeric characters or !@#$%^&*()</p>
 
             <div class="loginBtns">
-                <button type="submit" class="loginBtn secondary">Sign in</button>
+                <button type="submit" class="loginBtn secondary">Login</button>
                 <button type="button" class="signUp">Sign Up</button>
             </div>
             <p class="submitStatus"></p>

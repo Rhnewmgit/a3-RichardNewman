@@ -1,17 +1,19 @@
 {
-  "name": "a2-RichardNewman",
+  "name": "a3-RichardNewman",
   "version": "",
-  "description": "WPI CS 4241 assignment 2",
+  "description": "WPI CS 4241 assignment 3",
   "author": "Richard Newman",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
+    "@picocss/pico": "^2.1.1",
     "cookie-session": "^2.1.1",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "mime": "^2.4.4",
-    "mongodb": "^7.6.0"
+    "mongodb": "^7.6.0",
+    "passport-github2": "^0.1.12"
   },
   "engines": {
     "node": "24.x"

@@ -129,6 +129,7 @@ async function getUser() {
   document.querySelector("#yourname").value = userName;
   stateIdle();
   document.querySelector(".currentUserLogoutBtn").textContent = "Logout " + userName;
+  updateLists(arr.documents);
 }
 
 
@@ -146,7 +147,7 @@ async function updateLists(arr = null) {
     li.innerHTML = `<button type="button" class="listBtn editBtn">✏️</button>
                   <button type="button" class="listBtn deleteBtn">🗑️</button>
                   ${item.name}: 
-                  <input class="reactMS" type="text" name=reactMS value=${item.ms} disabled></input>
+                  <input class="reactMS" type="text" aria-label="Millisecond reaction time" name=reactMS value=${item.ms} disabled></input>
                   ms`;
     li.querySelector('input').style.width = `${0.6 * Math.floor(Math.log10(item.ms) + 1)}em`
     timeList.appendChild(li);
@@ -241,7 +242,6 @@ async function resetToSample(event) {
 
 
 window.onload = function () {
-  getUser();
   reactBtn = document.querySelector("#reactBtn");
   // nameBtn = document.querySelector('#yournameBtn')
   reactBtn.onclick = submit;
@@ -250,13 +250,13 @@ window.onload = function () {
   // }
   timeList = document.querySelector("#timeList");
   avgList = document.querySelector("#avgList");
+  resetBtn = document.querySelector("#resetBtn");
 
-  updateLists();
   document.querySelector('#yourname').addEventListener("change", () => {
     stateIdle()
   })
+  getUser();
 
-  resetBtn = document.querySelector("#resetBtn");
   let areYouSureBtn = resetBtn.nextElementSibling;
   resetBtn.addEventListener("click", () => {
     resetBtn.setAttribute("hidden", "true");
@@ -265,6 +265,14 @@ window.onload = function () {
       areYouSureBtn.setAttribute("hidden", "true");
       resetBtn.removeAttribute("hidden");
     }, 4000);
+  })
+  document.querySelector(".currentUserLogoutBtn").addEventListener("click", async () => {
+    const response = await fetch("/logout", {
+      method: "POST",
+    });
+    if (response.redirected) {
+      window.location.href = response.url;
+    }
   })
   areYouSureBtn.addEventListener("click", resetToSample);
 

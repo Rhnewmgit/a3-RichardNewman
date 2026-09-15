@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express"),
 	{ MongoClient, ServerApiVersion, ObjectId } = require("mongodb"),
 	cookie = require("cookie-session"),
+	// passport = require("passport-github2"),
 	app = express();
 
 const logger = (req, res, next) => {
@@ -10,7 +11,7 @@ const logger = (req, res, next) => {
 	next();
 };
 
-app.use(logger);
+// app.use(logger);
 app.use(express.urlencoded({ extended: true }))
 app.use(
 	cookie({
@@ -21,6 +22,17 @@ app.use(
 app.use(express.json());
 app.use(express.static("public"));
 
+// passport.use(new GitHubStrategy({
+// 	clientID: GITHUB_CLIENT_ID,
+// 	clientSecret: GITHUB_CLIENT_SECRET,
+// 	callbackURL: "http://127.0.0.1:3000/auth/github/callback"
+// },
+// 	function (accessToken, refreshToken, profile, done) {
+// 		User.findOrCreate({ githubId: profile.id }, function (err, user) {
+// 			return done(err, user);
+// 		});
+// 	}
+// ));
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
 
@@ -150,8 +162,6 @@ async function updateOneAverage(time, user) {
 }
 
 app.post("/login", async (req, res) => {
-	console.log(req.body);
-
 	if (req.body === null || req.body === undefined || req.body.username === null || req.body.username.length < 4) {
 		res.json(null);
 		return;
@@ -175,7 +185,7 @@ app.post("/login", async (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-
+	const user = req.session?.user;
 	if (req.body === null || req.body === undefined || req.body.username.length < 4) {
 		return res.json(null);
 	}
@@ -250,8 +260,8 @@ app.delete("/remove", async (req, res) => {
 
 app.get("/user", async (req, res) => {
 	const user = await req.session?.user;
-	console.log(user);
-	res.json({ user });
+	const docs = await getAllDocs(user);
+	res.json({ user, docs });
 })
 
 app.put("/edit", async (req, res) => {
@@ -279,6 +289,13 @@ app.post("/submit", async (req, res) => {
 
 	const docs = await getAllDocs(user);
 	res.json(docs);
+});
+
+app.post("/logout", async (req, res) => {
+
+	const user = req.session.user;
+	req.session = null;
+	return res.redirect("login.html");
 });
 
 app.listen(process.env.PORT || 3000);

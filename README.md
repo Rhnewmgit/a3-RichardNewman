@@ -108,7 +108,11 @@ Include a very brief summary of your project here. Images are encouraged, along 
 
 ## Technical Achievements
 
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
+- **Lighthouse Tests Passed**: Using Google Chrome's built-in lighthouse tests in an incognito tab with my site gave it a 100% with all 4 categories (with fireworks) for both the login and main pages. The pages would inconsistently give lower performance metrics when not incognito; exploring the treemap shows a majority of the data being from scripts executed by browser extensions. For this result, I had to optimize some of my requests to the database, since many could be combined from two separate requests into one by also sending the relevant user's data along with the response.
+
+- **Express Middleware**: I used the following express middleware:
+    - Cookies, to store persistent data?
+    - Passport-oauth?
 
 ### Design/Evaluation Achievements
 
