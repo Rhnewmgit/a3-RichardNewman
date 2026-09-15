@@ -292,7 +292,7 @@ app.post("/submit", async (req, res) => {
 
 app.post("/logout", async (req, res) => {
 
-	const user = req.session.user;
+	const user = req?.session?.user;
 	req.session = null;
 	return res.redirect("login.html");
 });

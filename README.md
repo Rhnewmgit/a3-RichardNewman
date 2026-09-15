@@ -1,123 +1,22 @@
-# Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template
+# Richard Newman - Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template
 
-Due: September 15th, by 1:59 PM.
+Richard Newman
+<br>
+https://a3-richardnewman.onrender.com/main.html
 
-This assignment continues where we left off in A2, extending it to use a popular Node.js server framework (express), a database (mongodb), and a CSS application framework / template of your choice (Bootstrap, Material Design, Semantic UI, Pure etc.)
+## Updated Reaction Speed Test
 
-## Baseline Requirements
-
-Your application is required to implement the following functionalities:
-
-- a `Server`, created using Express (no alternatives will be accepted for this assignment)
-- a `Results` functionality which shows all data associated with a logged in user (except passwords)
-- a `Form/Entry` functionality which allows users to add, modify, and delete data items (must be all three!) associated with their user name / account.
-- Persistent data storage in between server sessions using [mongodb](https://www.mongodb.com/cloud/atlas) (you _must_ use mongodb for this assignment). You can use either the [official mongodb node.js library](https://www.npmjs.com/package/mongodb) or use the [Mongoose library](https://www.npmjs.com/package/mongoose), which enables you to define formal schemas for your database. Please be aware that the course staff cannot provide in-depth support for use of Mongoose.
-- Use of a [CSS framework or template](https://github.com/troxler/awesome-css-frameworks).
-  This should do the bulk of your styling/CSS for you and be appropriate to your application.
-  For example, don't use [NES.css](https://nostalgic-css.github.io/NES.css/) (which is awesome!) unless you're creating a game or some type of retro 80s site.
-
-Your application is required to demonstrate the use of the following concepts:
-
-HTML:
-
-- HTML input tags and form fields of various flavors (`<textarea>`, `<input>`, checkboxes, radio buttons etc.)
-- HTML that can display all data _for a particular authenticated user_. Note that this is different from the last assignnment, which required the display of all data in memory on the server.
-
-Note that it might make sense to have two pages for this assignment, one that handles login / authentication, and one that contains the rest of your application.
-For example, when visiting the home page for the assignment, users could be presented with a login form. After submitting the login form, if the login is
-successful, they are taken to the main application. If they fail, they are sent back to the login to try again. For this assignment, it is acceptable to simply create
-new user accounts upon login if none exist, however, you must alert your users to this fact.
-
-CSS:
-
-- CSS styling should primarily be provided by your chosen template/framework.
-  Oftentimes a great deal of care has been put into designing CSS templates;
-  don't override their stylesheets unless you are extremely confident in your graphic design capabilities.
-  The idea is to use CSS templates that give you a professional looking design aesthetic without requiring you to be a graphic designer yourself.
-
-JavaScript:
-
-- At minimum, a small amount of front-end JavaScript to get / fetch data from the server.
-  See the [previous assignment](https://github.com/cs-4241-23/shortstack) for reference.
-
-Node.js:
-
-- A server using Express and a persistent database (mongodb).
-
-General:
-
-- Your site should achieve at least 90% on the `Performance`, `Best Practices`, `Accessibility`, and `SEO` tests
-  using Google [Lighthouse](https://developers.google.com/web/tools/lighthouse) (don't worry about the PWA test, and don't worry about scores for mobile devices).
-  Test early and often so that fixing problems doesn't lead to suffering at the end of the assignment.
-
-## Deliverables
-
-Do the following to complete this assignment:
-
-1. Implement your project with the above requirements. I'd begin by converting your A2 assignment. First, change the server to use express. Then, modify the server to use mongodb instead of storing data locally. Last but not least, implement user accounts and login. User accounts and login is often the hardest part of this assignment, so budget your time accordingly.
-2. Deploy your project to Render and fill in the appropriate fields in your package.json file.
-3. Test your project to make sure that when someone goes to your main page on Render, it displays correctly.
-4. Ensure that your project has the proper naming scheme `a3-yourfirstname-yourlastname` so we can find it.
-5. Fork this repository and modify the README to the specifications below.
-6. Create and submit a Pull Request to the original repo. Name the pull request using the following template: `a3-firstname-lastname`.
-
-## Achievements
-
-Below are suggested technical and design achievements. You can use these to help boost your grade up to an A and customize the
-assignment to your personal interests, for a maximum twenty additional points and a maximum grade of a 100%.
-These are recommended achievements, but feel free to create/implement your own... just make sure you thoroughly describe what you did in your README,
-why it was challenging, and how many points you think the achievement should be worth.
-ALL ACHIEVEMENTS MUST BE DESCRIBED IN YOUR README IN ORDER TO GET CREDIT FOR THEM.
-
-_Technical_
-
-- (10 points) Implement OAuth authentication, perhaps with a library like [passport.js](http://www.passportjs.org/).
-  _You must either use Github authenticaion or provide a username/password to access a dummy account_.
-  Course staff cannot be expected, for example, to have a personal Facebook, Google, or Twitter account to use when grading this assignment.
-  Please contact the course staff if you have any questions about this. This is the hardest achievement in Webware; you have been warned!
-- (5 points) Get 100% (not 98%, not 99%, but 100%) in all four lighthouse tests required for this assignment.
-- (up to 5 points) List up to five Express middleware packages you used and a short (one sentence) summary of what each one does. THESE MUST BE SEPARATE PACKAGES THAT YOU INSTALL VIA NPM, NOT THE ONES INCLUDED WITH EXPRESS. So express.json and express.static don't count here. For a starting point on middleware, see [this list](https://expressjs.com/en/resources/middleware.html).
-
-_Design/UX_
-
-- (10 points) Make your site accessible using the [resources and hints available from the W3C](https://www.w3.org/WAI/), Implement/follow twelve tips from their [tips for writing](https://www.w3.org/WAI/tips/writing/), [tips for designing](https://www.w3.org/WAI/tips/designing/), and [tips for development](https://www.w3.org/WAI/tips/developing/). _Note that all twelve must require active work on your part_.
-  For example, even though your page will most likely not have a captcha, you don't get this as one of your twelve tips to follow because you're effectively
-  getting it "for free" without having to actively change anything about your site.
-  Contact the course staff if you have any questions about what qualifies and doesn't qualify in this regard.
-  List each tip that you followed and describe what you did to follow it in your site.
-- (5 points) Describe how your site uses the CRAP principles in the Non-Designer's Design Book readings.
-  Which element received the most emphasis (contrast) on each page?
-  How did you use proximity to organize the visual information on your page?
-  What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site?
-  How did you use alignment to organize information and/or increase contrast for particular elements.
-  Write a paragraph of at least 125 words _for each of the four principles_ (four paragraphs, 500 words in total).
-
-## Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
-
-## Your Web Application Title
-
-A link to your project running on render.
-
-Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
-
-- the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-    - include any modifications to the CSS framework you made via custom CSS you authored
+For this assignment, I updated the reaction speed test I made for assignment 2, migrating it to use express and mongodb for persistence in the backend, updating the visuals using the CSS framework PicoCSS, and adding login functionality. Now, instead of showing all the data on the server, the data shown on the main page is per-user, with all of the options to add, delete, and modify the reaction times remaining functional. This application can now measure users' reaction times as before, but will save their data and allow them to log back in at any time. PicoCSS was able to add quite a bit of style to the program just by importing it, but customization was needed for minor adjustments such as forcing dark mode to keep the design consistent, adding classes to make certain buttons "secondary" to change their style, and adjusting the size, margin, and padding of items to make everything feel properly proportioned on the page. I chose PicoCSS because, as one of the frameworks advertised as "classless", it had a lot of styling for html elements and had an appealing design right out of the bat. My authentication strategy of choice was a simple username and password check in the database; I wanted to try OAuth, but didn't end up allocating enough time into the project to allow for that and scrapped it after spending some time on it due to time constraints. My largest challenges were getting MongoDB to cooperate, since having to handle requests and responses that are passed between the client and server leaves much room for error, as well as making them harder to track down. Aggregation functions specifically were interesting but time-consuming to learn for MongoDB, and after returning the application to its previous functionality I had to refactor it once again to make it so the data could be retrieved and modified in a user-specific way.
 
 ## Technical Achievements
 
-- **Lighthouse Tests Passed**: Using Google Chrome's built-in lighthouse tests in an incognito tab with my site gave it a 100% with all 4 categories (with fireworks) for both the login and main pages. The pages would inconsistently give lower performance metrics when not incognito; exploring the treemap shows a majority of the data being from scripts executed by browser extensions. For this result, I had to optimize some of my requests to the database, since many could be combined from two separate requests into one by also sending the relevant user's data along with the response.
+- **Lighthouse Tests Passed**: Using Google Chrome's built-in lighthouse tests in an incognito tab with my site gave it a 100% with all 4 categories (with fireworks) for both the login and main pages. The pages would inconsistently give lower performance metrics when not incognito; exploring the treemap shows a majority of the data being from scripts executed by browser extensions; disabling all of them results in the 100%. The test was also seemingly picky on giving a 100% score due to the amount of unused CSS from the chosen CSS framework. For this result, I had to optimize some of my requests to the database, since many could be combined from two separate requests into one by also sending the relevant user's data along with the response, as well as deferring the loading of some items.
+
+![Fireworks](LighthouseTests.png)
 
 - **Express Middleware**: I used the following express middleware:
-    - Cookies, to store persistent data?
-    - Passport-oauth?
-
-### Design/Evaluation Achievements
-
-- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
+    - cookie-session: The recommended middleware to handle cookies that was used both to keep a user logged in and to maintain track of a specific user's username through the session cookie in the requests.
 
 ## LLM Use
 
-During this project, I consulted Claude to help debug my login page not functioning properly (quite late into the night). No code was directly pasted into the LLM. The problems included forgetting to include the header in one place but not another, as well as needing to manually update the URL to the main page on successful login since I prevented the default form submit due to earlier troubles with it and thus needed to change the page manually.
+During this project, I consulted Claude to help debug my login page not functioning properly (quite late into the night). No code was pasted into the LLM. After asking question such as why a response's body may be undefined, I was able to resolve problemss including forgetting to include the header for the body type in one place but not another, as well as needing to manually update the URL to the main page on successful login since I prevented the default form submit due to earlier troubles with it and thus needed to change the page manually.

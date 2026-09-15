@@ -270,9 +270,8 @@ window.onload = function () {
     const response = await fetch("/logout", {
       method: "POST",
     });
-    if (response.redirected) {
-      window.location.href = response.url;
-    }
+    window.location.href = response.url;
+
   })
   areYouSureBtn.addEventListener("click", resetToSample);
 
