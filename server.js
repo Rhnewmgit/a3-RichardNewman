@@ -152,7 +152,6 @@ async function updateOneAverage(time, user) {
 				},
 			},
 			{ $set: { avg: { $divide: ["$tot", "$n"] } } },
-			{ $sort: { avg: -1 } }
 		],
 		{
 			upsert: true,
