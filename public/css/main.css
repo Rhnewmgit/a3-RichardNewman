@@ -173,3 +173,28 @@ h1 {
     background-color: #bc2500;
   }
 }
+
+.loginMain {
+  margin-bottom: 0;
+}
+
+.loginBtns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  button {
+    width: 40%;
+  }
+}
+
+.currentUserLogout {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.currentUserLogoutBtn {
+  margin: 0%;
+  margin-top: 1px;
+
+}

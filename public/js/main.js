@@ -6,6 +6,7 @@ let reactBtn = null;
 let nameBtn = null;
 let playername = "";
 let resetBtn = null;
+let userName = "";
 
 const reactStateList = {
   idle: 0,
@@ -84,7 +85,7 @@ function stateIdle() {
  *  ms: reaction time
  */
 async function sendNewTimeData(name, ms) {
-  json = { name: name, ms: ms }, body = JSON.stringify(json);
+  json = { name: name, ms: ms, user: userName }, body = JSON.stringify(json);
 
   const response = await fetch("/submit", {
     method: "POST",
@@ -118,13 +119,22 @@ async function getDBDocuments() {
   return arr;
 }
 
+async function getUser() {
+  const response = await fetch("/user", {
+    method: "GET",
+  })
+
+  const arr = await response.json();
+  userName = arr.user;
+  document.querySelector(".currentUserLogoutBtn").textContent = "Logout " + userName;
+}
+
 
 // updates time and average time lists with given object holding a list of times and averages
 async function updateLists(arr = null) {
   if (arr === null) {
     arr = await getDBDocuments();
   }
-
   timeList.innerHTML = "";
   for (let n = arr.times.length - 1; n >= 0; n--) {
     const item = arr.times[n];
@@ -203,7 +213,7 @@ function deleteData(button, type, name, _id) {
 }
 
 async function putData(ms, _id) {
-  json = { ms: ms, _id: _id }, body = JSON.stringify(json);
+  json = { ms: ms, _id: _id, user: userName }, body = JSON.stringify(json);
 
   const response = await fetch("/edit", {
     method: "PUT",
@@ -229,6 +239,7 @@ async function resetToSample(event) {
 
 
 window.onload = function () {
+  getUser();
   reactBtn = document.querySelector("#reactBtn");
   // nameBtn = document.querySelector('#yournameBtn')
   reactBtn.onclick = submit;
@@ -237,8 +248,8 @@ window.onload = function () {
   // }
   timeList = document.querySelector("#timeList");
   avgList = document.querySelector("#avgList");
-  updateLists();
 
+  updateLists();
   document.querySelector('#yourname').addEventListener("change", () => {
     stateIdle()
   })
