@@ -2,7 +2,7 @@
 
 Richard Newman
 <br>
-https://a3-richardnewman.onrender.com/main.html
+https://a3-richardnewman.onrender.com/
 
 ## Updated Reaction Speed Test
 
