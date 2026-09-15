@@ -66,9 +66,9 @@ async function getAllDocs(user) {
 
 async function addSampleTimes(user) {
 	const result = await timesCollection.insertMany([
-		{ name: "Sample", ms: 309, user },
-		{ name: "Sample", ms: 264, user },
-		{ name: "Sample", ms: 402, user },
+		{ name: "Sample", ms: 309, user: user },
+		{ name: "Sample", ms: 264, user: user },
+		{ name: "Sample", ms: 402, user: user },
 	]);
 	return result;
 }
@@ -82,6 +82,12 @@ async function resetAverages(user) {
 	// averagesCollection = await client.db("a3-RichardNewman-Data").createCollection("averages");
 	const agg = await timesCollection.aggregate(
 		[
+			{
+				$match:
+				{
+					user
+				}
+			},
 			{
 				$group: {
 					_id: "$name",
@@ -99,6 +105,7 @@ async function resetAverages(user) {
 			{
 				$unset: "_id",
 			},
+			{ $sort: { avg: -1 } }
 		],
 		{},
 	);
@@ -133,6 +140,7 @@ async function updateOneAverage(time, user) {
 				},
 			},
 			{ $set: { avg: { $divide: ["$tot", "$n"] } } },
+			{ $sort: { avg: -1 } }
 		],
 		{
 			upsert: true,
@@ -150,11 +158,13 @@ app.post("/login", async (req, res) => {
 	}
 	const userPass = await userPassCollection.findOne({ username: req.body.username });
 
-	if (userPass !== null && req.body.password === userPass.password) {
+	if (userPass !== null && req.body.password === userPass.password && req.body.username != undefined) {
 		// define a variable that we can check in other middleware
 		// the session object is added to our requests by the cookie-session middleware
 		req.session.login = true;
-		req.session.user = req.body.user;
+		req.session.user = req.body.username;
+		console.log("User " + req.session.user + " logged in.");
+
 		// since login was successful, send the user to the main content
 		return res.redirect("main.html");
 	} else {
@@ -174,6 +184,8 @@ app.post("/signup", async (req, res) => {
 	if (userPass === null) {
 		await userPassCollection.insertOne({ username: req.body.username, password: req.body.password })
 		body.accountCreated = true;
+		await addSampleTimes(user);
+		await resetAverages(user);
 
 	}
 
@@ -237,11 +249,13 @@ app.delete("/remove", async (req, res) => {
 });
 
 app.get("/user", async (req, res) => {
-	const user = req.session?.user;
-	res.json(user);
+	const user = await req.session?.user;
+	console.log(user);
+	res.json({ user });
 })
 
 app.put("/edit", async (req, res) => {
+	const user = await req.session?.user;
 	const result = await timesCollection.updateOne({ _id: new ObjectId(req.body._id) }, { $set: { ms: req.body.ms } });
 	await resetAverages(user);
 	const docs = await getAllDocs(user);

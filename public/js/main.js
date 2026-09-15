@@ -126,6 +126,8 @@ async function getUser() {
 
   const arr = await response.json();
   userName = arr.user;
+  document.querySelector("#yourname").value = userName;
+  stateIdle();
   document.querySelector(".currentUserLogoutBtn").textContent = "Logout " + userName;
 }
 
